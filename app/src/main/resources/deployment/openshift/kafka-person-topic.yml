@@ -1,0 +1,11 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: person-topic
+  labels:
+    app: kafka-example
+    strimzi.io/cluster: kafka-cluster
+spec:
+  topicName: person-topic
+  partitions: 3
+  replicas: 3

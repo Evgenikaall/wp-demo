@@ -1,0 +1,25 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam linetype polyline
+skinparam linetype ortho
+
+rectangle "WP demo app" {
+    [service-a]
+    [service-b]
+    [common-schemas]
+}
+
+[common-schemas] .> [init-container]
+[init-container] -down....> [schema-registry]
+
+
+[service-a] <--down- [    kafka    ]
+[service-b] -down--> [    kafka    ]
+
+[service-a] <- [schema-registry]
+[service-b] -> [schema-registry]
+
+[common-schemas] -down-> [service-a]
+[common-schemas] -down-> [service-b]
+
+@enduml

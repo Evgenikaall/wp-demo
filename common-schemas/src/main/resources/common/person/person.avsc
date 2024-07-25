@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "Person",
+  "namespace": "com.wp.model",
+  "fields": [
+    {
+      "name": "identifier",
+      "type": "long"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}
