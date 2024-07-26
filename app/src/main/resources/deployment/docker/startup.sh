@@ -11,7 +11,7 @@ podman container exec kafka-broker-1 kafka-topics --create --topic person-topic 
 
 sleep 10
 
-SCHEMA=$(cat ../schemas/common/person/person.avsc | jq -Rs .)
+SCHEMA=$(cat ../schemas/common/person/person.avsc | sed 's|\"|\\"|g')
 SCHEMA_REGISTRY_URL="http://localhost:8081"
 for i in {1..10}; do
   RESPONSE=$(curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" --data '{"schema": '"$SCHEMA"'}' $SCHEMA_REGISTRY_URL/subjects/person-topic-value/versions)

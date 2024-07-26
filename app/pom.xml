@@ -12,11 +12,6 @@
     <dependencies>
         <dependency>
             <groupId>org.wp</groupId>
-            <artifactId>producer</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wp</groupId>
             <artifactId>service-a</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -61,7 +56,8 @@
                                     <groupId>org.wp</groupId>
                                     <artifactId>common-schemas</artifactId>
                                     <version>${project.parent.version}</version>
-                                    <outputDirectory>${project.build.directory}/classes/deployment/schemas</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/classes/deployment/schemas
+                                    </outputDirectory>
                                     <includes>**\/*.avsc</includes>
                                 </artifactItem>
                             </artifactItems>
