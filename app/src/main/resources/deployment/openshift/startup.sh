@@ -70,7 +70,7 @@ wait_for_route() {
 }
 
 setup_schema_registry() {
-  schema=$(cat ../schemas/common/person/person.avsc | jq -Rs .)
+  SCHEMA=$(cat ../schemas/common/person/person.avsc | sed 's|\"|\\"|g')
   local url="http://$(oc get routes schema-registry -o=jsonpath={.spec.host})/subjects/person-topic-value/versions"
   for i in {1..60}; do
     if curl -s --head --request GET "$url" | grep "200 OK" > /dev/null; then
