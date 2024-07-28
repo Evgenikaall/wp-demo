@@ -1,9 +1,8 @@
-package com.wp.serviseb.person.producer;
+package com.wp.serviceb.person.producer;
 
 import com.wp.model.Person;
-import com.wp.serviseb.person.mapper.PersonMapperB;
-import com.wp.serviseb.person.service.PersonService;
-import jakarta.annotation.PostConstruct;
+import com.wp.serviceb.person.mapper.PersonMapperB;
+import com.wp.serviceb.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.wp.serviseb.person.model;
+package com.wp.serviceb.person.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

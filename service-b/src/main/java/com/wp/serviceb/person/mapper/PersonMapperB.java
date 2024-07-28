@@ -1,7 +1,7 @@
-package com.wp.serviseb.person.mapper;
+package com.wp.serviceb.person.mapper;
 
 import com.wp.model.Person;
-import com.wp.serviseb.person.model.PersonModel;
+import com.wp.serviceb.person.model.PersonModel;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
