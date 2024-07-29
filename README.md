@@ -3,7 +3,7 @@ Example of app with some style and way how to work with provided technologies <b
 ![hhd.png](static%2Fhhd.png)
 
 ## How to start it (Will try to dockerize wp app for testing)
-In the first of all build the entire project (`mvn clean install -DskipTests`) <br> 
+In the first of all build the entire project (`mvn clean install -DskipTests -Dmaven.build.cache.enabled=false`) <br> 
 Execute the following instructions under `app/target/classes/deployment`
 ### Using Openshift Local (configured with 3 replicas and partitions, very unstable on Apple Silicon and with <16 ram)
 1. Code Ready Containers configuration (crc, steps for configuration via terminal, you can go with podman, but terminal is more stable)
