@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Starting kafka-example"
-podman-compose up -d
+podman compose up -d
 
 echo "Waiting 15s..."
 sleep 15
