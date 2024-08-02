@@ -2,7 +2,25 @@
   <configuration default="false" name="Run application" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
-      <option name="myRunnerSettings" />
+      <option name="myRunnerSettings">
+        <MavenRunnerSettings>
+          <option name="delegateBuildToMaven" value="false" />
+          <option name="environmentProperties">
+            <map>
+              <entry key="KAFKA_BOOSTRAP_SERVER_HOST" value="34.88.36.182:9094" />
+              <entry key="SCHEMA_REGISTRY_HOST" value="34.88.158.198:8081" />
+            </map>
+          </option>
+          <option name="jreName" value="corretto-17" />
+          <option name="mavenProperties">
+            <map />
+          </option>
+          <option name="passParentEnv" value="true" />
+          <option name="runMavenInBackground" value="true" />
+          <option name="skipTests" value="true" />
+          <option name="vmOptions" value="" />
+        </MavenRunnerSettings>
+      </option>
       <option name="myRunnerParameters">
         <MavenRunnerParameters>
           <option name="profiles">
