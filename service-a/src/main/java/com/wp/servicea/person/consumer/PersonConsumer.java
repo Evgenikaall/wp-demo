@@ -6,12 +6,12 @@ import com.wp.servicea.person.service.PersonProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static org.springframework.kafka.support.KafkaHeaders.CORRELATION_ID;
 import static org.springframework.kafka.support.KafkaHeaders.OFFSET;
 import static org.springframework.kafka.support.KafkaHeaders.RECEIVED_KEY;
 import static org.springframework.kafka.support.KafkaHeaders.RECEIVED_PARTITION;
@@ -34,20 +34,24 @@ public class PersonConsumer {
     )
     private void listen(
             final Person person,
+            @Header(value = RECEIVED_TOPIC) final String topic,
             @Header(value = OFFSET, required = false) final Long offset,
             @Header(value = RECEIVED_KEY, required = false) final String key,
-            @Header(value = RECEIVED_TOPIC, required = false) final String topic,
             @Header(value = RECEIVED_PARTITION, required = false) final Integer partition,
+            @Header(value = CORRELATION_ID, required = false) final String correlationId,
             @Header(value = RECEIVED_TIMESTAMP, required = false) final long offsetDateTime) {
+
+        // very bad example of logging
         log.info(
-                "Receive data: \"{}\", from topic: {}, by key: \"{}\", from partition: {}, by offset: {},"
-                        + " with time: {}",
+                "[{}] Receive data: \"{}\", from topic: {}, by key: \"{}\", from partition: {}, by offset: {}, with time: {}",
+                correlationId,
                 person,
                 topic,
                 key,
                 partition,
                 offset,
-                Instant.ofEpochMilli(offsetDateTime));
+                Instant.ofEpochMilli(offsetDateTime)
+        );
         personProcessor.process(personMapper.map(person));
     }
 

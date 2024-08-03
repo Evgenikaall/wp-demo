@@ -12,12 +12,16 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
-    properties:
-      allow.auto.create.topics: false
-      specific.avro.reader: true
-      schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
     listener:
       idle-event-interval: 30000
       poll-timeout: 2000
+    properties:
+      # VERY IMPORTANT !!!!!!!!!
+      auto.register.schemas: false
+      allow.auto.create.topics: false
+      specific.avro.reader: true
+      avro.remove.java.properties: true
+      # not very important
+      schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
 
 person-topic.name: person-topic
