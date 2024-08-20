@@ -39,7 +39,13 @@
             <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
-                <version>${avro.version}</version>
+                <version>1.10.0</version>
+                <configuration>
+                    <customConversions>
+                        org.apache.avro.Conversions$UUIDConversion,org.apache.avro.data.TimeConversions$TimestampMillisConversion
+                    </customConversions>
+                    <stringType>String</stringType>
+                </configuration>
                 <executions>
                     <execution>
                         <id>schemas</id>
@@ -51,7 +57,6 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
-                            <stringType>String</stringType>
                         </configuration>
                     </execution>
                 </executions>

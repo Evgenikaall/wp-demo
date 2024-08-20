@@ -5,7 +5,7 @@ Example of app with some style and way how to work with provided technologies <b
 ## How to start it (Will try to dockerize wp app for testing)
 In the first of all build the entire project (`mvn clean install -DskipTests -Dmaven.build.cache.enabled=false`) <br> 
 Execute the following instructions under `app/target/classes/deployment`
-### Using Openshift Local (configured with 1 replicas and partitions, very unstable on Apple Silicon and with <16 ram)
+### [NOT SUPPORTED NOW] Using Openshift Local (configured with 1 replicas and partitions, very unstable on Apple Silicon and with <16 ram)
 1. Code Ready Containers configuration (crc, steps for configuration via terminal, you can go with podman, but terminal is more stable)
    - install https://developers.redhat.com/products/openshift-local/overview
    - execute `crc setup` to obtain suitable bundle (in case of any trouble with connection, go with background process `crc daemon` and try again)
@@ -40,7 +40,7 @@ Execute the following instructions under `app/target/classes/deployment`
 3. Use `startup.sh` and `cleanup.sh` (check if sh scripts have privileges for execution and double check, if used commands are supported in your OS)
 4. Default values, provided in `application.yml` are configured based on this deployment (`localhost:8090`-kafka-ui, `localhost:9021` - confluent-control-center, similar things :D)
 5. For running app
-   - use `mvn -pl app spring-boot:run -Dspring-boot.run.jvmArguments="-DKAFKA_BOOSTRAP_SERVER_HOST=<targetHost> -DSCHEMA_REGISTRY_HOST=<targetHost>"`
+   - use `mvn -pl app spring-boot:run -Dspring-boot.run.jvmArguments="-DKAFKA_BOOSTRAP_SERVER_HOST=<targetHost> -DSCHEMA_REGISTRY_HOST=<targetHost> -DDB_HOST=localhost:5432 -DDB_USERNAME=postgres -DDB_PASS=postgres"`
 
 ### AWS (TBU, will add my own credentials for testing purposes. OVERPRICED !!!!!!!!)
 

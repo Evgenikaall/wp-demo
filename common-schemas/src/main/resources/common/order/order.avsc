@@ -1,0 +1,76 @@
+{
+  "type": "record",
+  "name": "Order",
+  "namespace": "com.wp.model",
+  "fields": [
+    {
+      "name": "meta",
+      "type": {
+        "type": "record",
+        "name": "Meta",
+        "namespace": "com.wp.model",
+        "fields": [
+          {
+            "name": "lrtIdentifier",
+            "type": {
+              "type": "string",
+              "logicalType": "uuid"
+            }
+          },
+          {
+            "name": "orderedAt",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "category",
+            "type": {
+              "name": "OrderCategory",
+              "type": "enum",
+              "symbols": [
+                "EVENT",
+                "NEEVENT"
+              ],
+              "default": "EVENT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "payload",
+      "type": {
+        "type": "record",
+        "name": "OrderData",
+        "namespace": "com.wp.model",
+        "fields": [
+          {
+            "name": "status",
+            "type": {
+              "name": "OrderStatus",
+              "type": "enum",
+              "symbols": [
+                "SUCCESS",
+                "ERROR",
+                "IN_PROGRESS",
+                "INITIATED",
+                "FINISHED",
+                "REJECTED"
+              ]
+            }
+          },
+          {
+            "name": "unusedString",
+            "type": "string"
+          },
+          {
+            "name": "unusedLong",
+            "type": "long"
+          }
+        ]
+      }
+    }
+  ]
+}

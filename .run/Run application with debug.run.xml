@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run application" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Run application with debug" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings">
@@ -29,6 +29,7 @@
           <option name="goals">
             <list>
               <option value="spring-boot:run" />
+              <option value="-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5000" />
             </list>
           </option>
           <option name="pomFileName" />
