@@ -1,8 +1,8 @@
-package com.wp.servicea.person.consumer;
+package com.wp.servicea.order.consumer;
 
-import com.wp.model.Person;
-import com.wp.servicea.person.mapper.PersonMapperA;
-import com.wp.servicea.person.processor.PersonProcessor;
+import com.wp.model.Order;
+import com.wp.servicea.order.mapper.OrderModelConsumerMapper;
+import com.wp.servicea.order.processor.OrderProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,19 +22,19 @@ import static org.springframework.kafka.support.KafkaHeaders.RECEIVED_TOPIC;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PersonConsumer {
+public class OrderConsumer {
 
-    private final PersonMapperA personMapper;
+    private final OrderProcessor orderProcessor;
 
-    private final PersonProcessor personProcessor;
+    private final OrderModelConsumerMapper mapper;
 
     @KafkaListener(
-            id = "person-topic-id",
-            groupId = "person-group",
-            topics = "${person-topic.name}"
+            id = "order-topic-id",
+            groupId = "order-group",
+            topics = "${order-topic.name}"
     )
     private void listen(
-            final Person person,
+            final Order order,
             @Header(value = RECEIVED_TOPIC) final String topic,
             @Header(value = OFFSET, required = false) final Long offset,
             @Header(value = RECEIVED_KEY, required = false) final String key,
@@ -46,40 +46,15 @@ public class PersonConsumer {
         log.info(
                 "[{}] Receive data: \"{}\", from topic: {}, by key: \"{}\", from partition: {}, by offset: {}, with time: {}",
                 correlationId,
-                person,
+                order,
                 topic,
                 key,
                 partition,
                 offset,
                 Instant.ofEpochMilli(offsetDateTime)
         );
-        personProcessor.process(personMapper.map(person));
+
+        orderProcessor.process(mapper.map(order));
+
     }
-
-  /*
-     example of multi-structured topic
-      @KafkaListener(id = "genericListener", topics = "bilingual-topic")
-      static class MultiListenerBean {
-
-          @KafkaHandler
-          public void listen(Car car) {
-              ...
-          }
-
-          @KafkaHandler
-          public void listen(Bike bike) {
-              ...
-          }
-
-          @KafkaHandler
-          public void listen(Vehicle vehicle) {
-                   ...
-           }
-
-          @KafkaHandler(isDefault = true)
-          public void listenDefault(Object object) {
-              ...
-          }
-      }
-  */
 }

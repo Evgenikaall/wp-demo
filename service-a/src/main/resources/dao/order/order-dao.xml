@@ -1,0 +1,44 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.servicea.order.dao.OrderDao">
+
+
+    <!--    The best way to handle myBatis to split this in 3 files: order-dao-common (reusable things), order-dao-save, order-dao-update. -->
+    <!--    easier to manage in the future -->
+
+
+    <resultMap id="client" type="com.wp.servicea.order.model.OrderModel">
+        <id column="identifier" property="identifier"/>
+        <result column="ordered_at" property="orderedAt"/>
+        <result column="transport_status" property="transportStatus"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="original_data" property="originalData"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.wp.servicea.order.model.OrderModel">
+        INSERT INTO t_order_data (
+            identifier,
+            ordered_at,
+            transport_status,
+            order_status,
+            original_data
+        ) VALUES (
+            #{identifier},
+            #{orderedAt},
+            #{transportStatus},
+            #{orderStatus},
+            #{originalData}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.wp.servicea.order.model.OrderModel">
+        UPDATE
+            t_order_data
+        SET
+            transport_status = #{transportStatus}
+        WHERE
+            identifier = #{identifier}
+    </update>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.wp.servicea.person.service;
+package com.wp.servicea.person.processor;
 
 import com.wp.servicea.person.model.PersonModel;
 import lombok.extern.slf4j.Slf4j;

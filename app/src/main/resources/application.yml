@@ -4,17 +4,16 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOSTRAP_SERVER_HOST:localhost:19092}
     consumer:
-      group-id: person-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
+      max-poll-interval-ms: 10000
+      auto-offset-reset: latest
+      max-poll-records: 1
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
-    listener:
-      idle-event-interval: 30000
-      poll-timeout: 2000
     properties:
       # VERY IMPORTANT !!!!!!!!!
       auto.register.schemas: false
@@ -23,5 +22,15 @@ spring:
       avro.remove.java.properties: true
       # not very important
       schema.registry.url: http://${SCHEMA_REGISTRY_HOST:localhost:8081}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost:5432}/orders
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASS:postgres}
+
+mybatis:
+  mapper-locations: classpath*:/dao/**/*.xml
+  type-handlers-package: com.wp.servicea.common.support
 
 person-topic.name: person-topic
+order-topic.name: order-topic
