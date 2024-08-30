@@ -1,8 +1,10 @@
 package com.wp.app;
 
+import com.wp.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -11,22 +13,33 @@ import java.util.UUID;
 @Slf4j
 public class KafkaCamelRoute extends RouteBuilder {
 
-    private final static String KAFKA_ENDPOINT = "kafka:%s";
+    private static final String KAFKA_ENDPOINT = "kafka:%s";
+
+    @Value("${application.kafka.topic.raw-data-topic}")
+    private String rawDataTopic;
+
+    @Value("${application.kafka.topic.cooked-data-topic}")
+    private String cookedDataTopic;
 
     @Override
     public void configure() {
         log.info("KafkaCamelRoute configure");
 
-        fromF(KAFKA_ENDPOINT, "ec-pet")
+        from("direct:start")
+                .log("Http endpoint called: ${body}")
+                .toF(KAFKA_ENDPOINT, rawDataTopic);
+
+        fromF(KAFKA_ENDPOINT, rawDataTopic)
                 .log("Received message from Kafka: ${body}")
                 .process(exchange -> {
-                    var body = exchange.getIn().getBody(String.class);
-                    exchange.getIn().setBody(body.concat(StringUtils.SPACE + UUID.randomUUID()));
+                    Person person = exchange.getIn().getBody(Person.class);
+                    person.setName(person.getName().concat(StringUtils.SPACE + UUID.randomUUID()));
+                    exchange.getIn().setBody(person);
                 })
                 .to("direct:processMessage");
 
         from("direct:processMessage")
                 .log("Processing message: ${body}")
-                .toF(KAFKA_ENDPOINT, "ec-pet-2");
+                .toF(KAFKA_ENDPOINT, cookedDataTopic);
     }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 # additional camel.component.kafka properties: https://camel.apache.org/components/4.4.x/kafka-component.html
 camel:
@@ -7,7 +7,19 @@ camel:
     kafka:
       brokers: localhost:19092
       autoOffsetReset: earliest
+      schema-registry-u-r-l: http://localhost:8081
+      specific-avro-reader: true
+
+#      configuration:
+#        schema: http://localhost:8081
+
+#      additional-properties:
+#        auto.register.schemas: false
+#        allow.auto.create.topics: false
+#        schema.registry.url: http://localhost:8081
+
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
