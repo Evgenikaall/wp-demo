@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+# additional camel.component.kafka properties: https://camel.apache.org/components/4.4.x/kafka-component.html
+camel:
+  component:
+    kafka:
+      brokers: localhost:19092
+      autoOffsetReset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
