@@ -10,14 +10,6 @@ camel:
       schema-registry-u-r-l: http://localhost:8081
       specific-avro-reader: true
 
-#      configuration:
-#        schema: http://localhost:8081
-
-#      additional-properties:
-#        auto.register.schemas: false
-#        allow.auto.create.topics: false
-#        schema.registry.url: http://localhost:8081
-
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
 
