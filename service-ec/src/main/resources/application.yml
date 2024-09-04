@@ -18,6 +18,7 @@ camel:
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
       additionalProperties:
-        auto-register-schemas: true
-        avro-remove-java-properties: true
         value-subject-name-strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+        auto-register-schemas: false
+        avro-remove-java-properties: true
+

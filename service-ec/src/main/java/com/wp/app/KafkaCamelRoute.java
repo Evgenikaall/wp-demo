@@ -13,7 +13,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class KafkaCamelRoute extends RouteBuilder {
 
-    private static final String KAFKA_ENDPOINT = "kafka:%s";
+    private static final String KAFKA_ENDPOINT =
+            "kafka:%s"
+                    + "?additional-properties[auto.register.schemas]=false"
+                    + "&additional-properties[avro.remove.java.properties]=true"
+                    + "&additional-properties[value.subject.name.strategy]=io.confluent.kafka.serializers.subject.RecordNameStrategy"
+            ;
 
     @Value("${application.kafka.topic.raw-data-topic}")
     private String rawDataTopic;
@@ -25,7 +30,7 @@ public class KafkaCamelRoute extends RouteBuilder {
     public void configure() {
         log.info("KafkaCamelRoute configure");
 
-        //errorHandler(deadLetterChannel("seda:error"));
+        errorHandler(deadLetterChannel("seda:error"));
 
         onException(KafkaRouteException.class)
                 .handled(true)
