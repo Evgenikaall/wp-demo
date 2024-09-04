@@ -1,27 +1,19 @@
 package com.wp.app;
 
-import com.wp.model.Person;
-import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
+import com.wp.exceptions.KafkaRouteException;
+import com.wp.processor.KafkaErrorMessageProcessor;
+import com.wp.processor.KafkaMessageAProcessor;
+import com.wp.processor.KafkaMessageBProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @Slf4j
 public class KafkaCamelRoute extends RouteBuilder {
 
-    private static final String KAFKA_ENDPOINT =
-            "kafka:%s"
-                    + "?additional-properties[auto.register.schemas]=false"
-                    + "&additional-properties[avro.remove.java.properties]=true"
-                    + "&additional-properties[value.subject.name.strategy]=io.confluent.kafka.serializers.subject.RecordNameStrategy"
-//                    + "&additional-properties[use.schema.id]=1"
-            ;
+    private static final String KAFKA_ENDPOINT = "kafka:%s";
 
     @Value("${application.kafka.topic.raw-data-topic}")
     private String rawDataTopic;
@@ -33,25 +25,31 @@ public class KafkaCamelRoute extends RouteBuilder {
     public void configure() {
         log.info("KafkaCamelRoute configure");
 
+        //errorHandler(deadLetterChannel("seda:error"));
+
+        onException(KafkaRouteException.class)
+                .handled(true)
+                .log("Error occurred: ${exception.message}")
+                .process(new KafkaErrorMessageProcessor());
+
         from("direct:start")
                 .log("Http endpoint called: ${body}")
-                .process(exchange -> {
-                    var person = exchange.getIn().getBody(Person.class);
-                    exchange.getIn().setBody(person);
-                })
                 .toF(KAFKA_ENDPOINT, rawDataTopic);
 
         fromF(KAFKA_ENDPOINT, rawDataTopic)
                 .log("Received message from Kafka: ${body}")
-                .process(exchange -> {
-                    Person person = exchange.getIn().getBody(Person.class);
-                    person.setName(person.getName().concat(StringUtils.SPACE + UUID.randomUUID()));
-                    exchange.getIn().setBody(person);
-                })
-                .to("direct:processMessage");
+                .choice()
+                .when(body().contains("identifier")).to("direct:processMessageA")
+                .otherwise().to("direct:processMessageB");
 
-        from("direct:processMessage")
-                .log("Processing message: ${body}")
+        from("direct:processMessageA")
+                .log("Processing message A: ${body}")
+                .process(new KafkaMessageAProcessor())
+                .toF(KAFKA_ENDPOINT, cookedDataTopic);
+
+        from("direct:processMessageB")
+                .log("Processing message B: ${body}")
+                .process(new KafkaMessageBProcessor())
                 .toF(KAFKA_ENDPOINT, cookedDataTopic);
     }
 }

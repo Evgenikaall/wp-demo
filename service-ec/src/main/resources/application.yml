@@ -2,6 +2,7 @@ server:
   port: 8080
 
 # additional camel.component.kafka properties: https://camel.apache.org/components/4.4.x/kafka-component.html
+
 camel:
   component:
     kafka:
@@ -15,3 +16,8 @@ camel:
 
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
+      additionalProperties:
+        auto-register-schemas: true
+        avro-remove-java-properties: true
+        value-subject-name-strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
