@@ -29,6 +29,7 @@
         <module>service-a</module>
         <module>service-b</module>
         <module>app</module>
+        <module>service-ec</module>
     </modules>
 
 

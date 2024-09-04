@@ -23,7 +23,7 @@ services:
       - "2181:2181"
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:latest
+    image: confluentinc/cp-schema-registry:7.6.1
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -38,7 +38,7 @@ services:
       SCHEMA_REGISTRY_DEBUG: 'true'
 
   kafka-broker-1:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.6.1
     hostname: kafka-broker-1
     container_name: kafka-broker-1
     ports:
